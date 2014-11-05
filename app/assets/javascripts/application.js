@@ -26,24 +26,20 @@ $(function() {
   var $male = $(".segment-male");
   var $female = $(".segment-female");
 
-  // var data = {
-  //   labels : ["January","February","March","April","May","June","July"],
-  //   labels : ["","","","","","",""],
-  //   datasets : [
-  //     {
-  //       fillColor : "rgba(151,187,205,0.5)",
-  //       strokeColor : "rgba(151,187,205,1)",
-  //       pointColor : "rgba(151,187,205,1)",
-  //       pointStrokeColor : "#fff",
-  //       data : [28,48,40,19,96,27,100]
-  //     }
-  //   ]
-  // };
+  var $allLink = $("#all-link");
+  var $maleLink = $("#male-link");
+  var $femaleLink = $("#female-link");
+
+  var chartData = {}
 
   $today.on("click", todayChart);
   $threeDays.on("click", threeDaysChart);
   $sevenDays.on("click", sevenDaysChart);
   $fourteenDays.on("click", fourteenDaysChart);
+
+  $allLink.on("click", normalChart);
+  $maleLink.on("click", displayMale);
+  $femaleLink.on("click", displayFemale);
 
   function todayChart(event) {
     event.preventDefault();
@@ -72,10 +68,18 @@ $(function() {
       dataType: "json",
       data: {},
       success: function(data) {
+        chartData = data;
         populateChart(data);
+        populatePieChart(data);
         updateNumbers(data);
       }
     });
+  };
+
+  function populatePieChart(data) {
+    $('.pie-chart').replaceWith('<canvas class="pie-chart" width="300" height="300"></canvas>');
+    var ctx = $(".pie-chart").get(0).getContext("2d");
+    new Chart(ctx).Pie(data.device_data);
   };
 
   function populateChart(data) {
@@ -88,6 +92,32 @@ $(function() {
     $all.text(data.segments.all);
     $male.text(data.segments.male);
     $female.text(data.segments.female);
+  };
+
+  function normalChart() {
+    if (chartData.datasets.length > 1) {
+      chartData.datasets = [chartData.datasets[0]];
+    }
+
+    populateChart(chartData);
+  };
+
+  function displayMale() {
+    if (chartData.datasets.length > 1) {
+      chartData.datasets = [chartData.datasets[0]];
+    }
+    chartData.datasets.push(chartData.male_data);
+
+    populateChart(chartData);    
+  };
+
+  function displayFemale() {
+    if (chartData.datasets.length > 1) {
+      chartData.datasets = [chartData.datasets[0]];
+    }
+    chartData.datasets.push(chartData.female_data);
+
+    populateChart(chartData);
   };
 
 });
