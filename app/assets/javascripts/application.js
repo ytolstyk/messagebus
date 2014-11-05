@@ -101,39 +101,42 @@ $(function() {
   };
 
   function normalChart() {
-    if (chartData.datasets.length > 1) {
-      chartData.datasets = [chartData.datasets[0]];
-    }
+    clearChart();
 
     populateChart(chartData);
   };
 
   function displayMale() {
-    if (chartData.datasets.length > 1) {
-      chartData.datasets = [chartData.datasets[0]];
-    }
+    clearChart();
     chartData.datasets.push(chartData.male_data);
 
     populateChart(chartData);    
   };
 
   function displayFemale() {
-    if (chartData.datasets.length > 1) {
-      chartData.datasets = [chartData.datasets[0]];
-    }
+    clearChart();
     chartData.datasets.push(chartData.female_data);
 
     populateChart(chartData);
   };
 
-  function meanChart() {
-
+  function meanChart(event) {
+    event.preventDefault();
+    clearChart();
+    var len = chartData.datasets[0].length;
   };
 
-  function trendChart() {
+  function trendChart(event) {
+    event.preventDefault();
+    clearChart();
+    var len = chartData.datasets[0].length;
+  };
 
+  function clearChart() {
+    if (chartData.datasets.length > 1) {
+      chartData.datasets = [chartData.datasets[0]];
+    }
   };
 
   $fourteenDays.trigger("click");
-
 });
