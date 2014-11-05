@@ -1,0 +1,80 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+* {
+  list-style: none;
+}
+
+#main {
+  position: relative;
+  width: 800px;
+  margin: 0 auto;
+}
+
+.chart-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.chart-buttons {
+  position: absolute;
+  right: 40px;
+  top: 50px;
+  display: inline-block;
+}
+
+.chart-button {
+  display: inline-block;
+}
+
+.chart {
+  position: absolute;
+  top: 80px;
+  margin: 0 auto;
+}
+
+.segment-label {
+  position: absolute;
+  top: 400px;
+  left: 10px;
+}
+
+.chart-control {
+  position: absolute;
+  right: 40px;
+  top: 390px;
+  display: inline-block;
+}
+
+.segment-links {
+  position: absolute;
+  top: 470px;
+  left: 10px;
+  padding-left: 10px;
+  display: inline-block;
+}
+
+.segment-numbers {
+  position: absolute;
+  top: 470px;
+  left: 90px;
+  padding-left: 10px;
+  display: inline-block;
+}
