@@ -90,19 +90,11 @@ class DevicesController < ApplicationController
   def populate_data(days_array)
     devices = Device.where(date: days_array)
 
-    data = {}
-    data[:numbers] = []
+    data = Hash.new { |h, k| h[k] = [] }
+
     days_array.each do |day|
       data[:numbers] << (devices.where(date: day).pluck(:activity).inject(&:+).to_f / devices.where(date: day).count.to_f * 100).round(1)
-    end
-
-    data[:male] = []
-    days_array.each do |day|
       data[:male] << (devices.where(date: day).where(male: true).pluck(:activity).inject(&:+).to_f / devices.where(date: day).where(male: true).count.to_f * 100).round(1)
-    end    
-
-    data[:female] = []
-    days_array.each do |day|
       data[:female] << (devices.where(date: day).where(male: false).pluck(:activity).inject(&:+).to_f / devices.where(date: day).where(male: false).count.to_f * 100).round(1)
     end
 
