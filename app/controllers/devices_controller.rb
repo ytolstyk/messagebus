@@ -11,12 +11,15 @@ class DevicesController < ApplicationController
     # X axis = auto-adjusts based on date and segment selection
     
     devices = Device.where(date: TODAY).order(:time)
+    days_array = [devices.first.time.to_s(:time), devices.last.time.to_s(:time)]
     half = devices.count / 2
 
-    labels = [devices.first.date, devices[half].date, devices.last.date]
+    data = [
+      devices.take(half).map!{|el| el.activity}.inject(&:+),
+      devices.drop(half).map!{|el| el.activity}.inject(&:+)
+    ]
 
-    data = []
-    render json: return_json(labels, data)
+    render json: return_json(days_array, data)
   end
 
   def three_days
@@ -42,7 +45,7 @@ class DevicesController < ApplicationController
 
     data = []
     days_array.each do |day|
-      data << devices.where(date: day).pluck(:activity).inject(&:+)
+      data << (devices.where(date: day).pluck(:activity).inject(&:+).to_f / devices.where(date: day).count.to_f * 100).round(1)
     end
     data
   end
@@ -65,7 +68,12 @@ class DevicesController < ApplicationController
                 pointStrokeColor: "#fff",
                 data: data
               }
-             ]
+             ],
+            segments: {
+              all: 1,
+              male: 2,
+              female: 3
+            }
       }
   end
 end
