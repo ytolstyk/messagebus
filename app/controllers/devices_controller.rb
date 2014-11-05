@@ -77,15 +77,12 @@ class DevicesController < ApplicationController
 
   def segments(days_array)
     devices = Device.where(date: days_array)
-    seg = Hash.new { |h, k| h[k] = 0 }
-    devices.each do |dev|
-      if dev.male
-        seg[:male] += 1
-      else
-        seg[:female] += 1
-      end
-      seg[:all] += 1
-    end
+    seg = {}
+
+    seg[:male] = devices.where(male: true).count
+    seg[:female] = devices.where(male: false).count
+    seg[:all] = devices.count
+
     seg
   end
 
