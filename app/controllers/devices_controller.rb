@@ -13,6 +13,8 @@ class DevicesController < ApplicationController
     devices = Device.where(date: TODAY).order(:time)
     days_array = [devices.first.time.to_s(:time), devices.last.time.to_s(:time)]
     half = devices.count / 2
+    fem_half = devices.where(male: false).count / 2
+    mal_half = devices.where(male: true).count / 2
 
     data = {}
 
@@ -22,13 +24,13 @@ class DevicesController < ApplicationController
     ]
 
     data[:female] = [
-      (devices.where(male: false).take(half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: false).take(half).count.to_f * 100).round(1),
-      (devices.where(male: false).drop(half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: false).drop(half).count.to_f * 100).round(1)
+      (devices.where(male: false).take(fem_half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: false).take(fem_half).count.to_f * 100).round(1),
+      (devices.where(male: false).drop(fem_half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: false).drop(fem_half).count.to_f * 100).round(1)
     ]
 
     data[:male] = [
-      (devices.where(male: true).take(half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: true).take(half).count.to_f * 100).round(1),
-      (devices.where(male: true).drop(half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: true).drop(half).count.to_f * 100).round(1)
+      (devices.where(male: true).take(mal_half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: true).take(mal_half).count.to_f * 100).round(1),
+      (devices.where(male: true).drop(mal_half).map!{|el| el.activity}.inject(&:+).to_f / devices.where(male: true).drop(mal_half).count.to_f * 100).round(1)
     ]
 
     data[:device_data] = [
