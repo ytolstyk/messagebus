@@ -131,7 +131,8 @@ $(function() {
   function trendChart(event) {
     event.preventDefault();
     clearChart();
-    
+
+    chartData.datasets.push(chartData.trend_data);
     populateChart(chartData);
   };
 

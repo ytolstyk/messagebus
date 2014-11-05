@@ -132,7 +132,17 @@ class DevicesController < ApplicationController
   end
 
   def return_json(labels, data, segments)
-    avg = (data[:numbers].inject(&:+).to_f / data[:numbers].length).round(1)
+    len = data[:numbers].length
+    avg = (data[:numbers].inject(&:+).to_f / len).round(1)
+
+    first = data[:numbers].first
+    last = data[:numbers].last
+    step = ((last - first).to_f / (len - 1).to_f)
+
+    trend = []
+    len.times do |i|
+      trend << (first + i * step).round(1)
+    end
 
     data = { labels: labels,
              datasets: [
@@ -166,6 +176,13 @@ class DevicesController < ApplicationController
               pointColor: "rgba(220,220,220,1)",
               pointStrokeColor: "#fff",
               data: [avg] * data[:numbers].length
+              },
+            trend_data: {
+              fillColor: "rgba(220,220,220,0.5)",
+              strokeColor: "rgba(220,220,220,1)",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: trend
               }
       }
   end
