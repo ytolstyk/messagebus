@@ -22,6 +22,10 @@ $(function() {
   var $sevenDays = $("#seven-days");
   var $fourteenDays = $("#fourteen-days");
 
+  var $all = $(".segment-all");
+  var $male = $(".segment-male");
+  var $female = $(".segment-female");
+
   // var data = {
   //   labels : ["January","February","March","April","May","June","July"],
   //   labels : ["","","","","","",""],
@@ -67,7 +71,10 @@ $(function() {
       method: "GET",
       dataType: "json",
       data: {},
-      success: populateChart
+      success: function(data) {
+        populateChart(data);
+        updateNumbers(data);
+      }
     });
   };
 
@@ -75,6 +82,12 @@ $(function() {
     $('.chart').replaceWith('<canvas class="chart" width="800" height="300"></canvas>');
     var ctx = $(".chart").get(0).getContext("2d");
     new Chart(ctx).Line(data);
+  };
+
+  function updateNumbers(data) {
+    $all.text(data.segments.all);
+    $male.text(data.segments.male);
+    $female.text(data.segments.female);
   };
 
 });

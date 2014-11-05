@@ -15,29 +15,43 @@ class DevicesController < ApplicationController
     half = devices.count / 2
 
     data = [
-      devices.take(half).map!{|el| el.activity}.inject(&:+),
-      devices.drop(half).map!{|el| el.activity}.inject(&:+)
+      (devices.take(half).map!{|el| el.activity}.inject(&:+).to_f / devices.take(half).count.to_f * 100).round(1),
+      (devices.drop(half).map!{|el| el.activity}.inject(&:+).to_f / devices.drop(half).count.to_f * 100).round(1)
     ]
 
-    render json: return_json(days_array, data)
+    render json: return_json(days_array, data, segments([TODAY]))
   end
 
   def three_days
     days_array = days(2)
 
-    render json: return_json(days_array, populate_data(days_array))
+    render json: return_json(days_array, populate_data(days_array), segments(days_array))
   end
 
   def seven_days
     days_array = days(6)
 
-    render json: return_json(days_array, populate_data(days_array))
+    render json: return_json(days_array, populate_data(days_array), segments(days_array))
   end
 
   def fourteen_days
     days_array = days(13)
 
-    render json: return_json(days_array, populate_data(days_array))
+    render json: return_json(days_array, populate_data(days_array), segments(days_array))
+  end
+
+  def segments(days_array)
+    devices = Device.where(date: days_array)
+    seg = Hash.new { |h, k| h[k] = 0 }
+    devices.each do |dev|
+      if dev.male
+        seg[:male] += 1
+      else
+        seg[:female] += 1
+      end
+      seg[:all] += 1
+    end
+    seg
   end
 
   def populate_data(days_array)
@@ -58,7 +72,7 @@ class DevicesController < ApplicationController
     days_array.reverse
   end
 
-  def return_json(labels, data)
+  def return_json(labels, data, segments = {})
     data = { labels: labels,
              datasets: [
               {
@@ -69,11 +83,7 @@ class DevicesController < ApplicationController
                 data: data
               }
              ],
-            segments: {
-              all: 1,
-              male: 2,
-              female: 3
-            }
+            segments: segments
       }
   end
 end
