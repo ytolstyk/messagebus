@@ -123,9 +123,11 @@ class DevicesController < ApplicationController
 
   def days(num)
     days_array = [TODAY]
+
     num.times do |i|
       days_array << TODAY - (i + 1).day
     end
+    
     days_array.reverse
   end
 

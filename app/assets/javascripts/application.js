@@ -30,6 +30,9 @@ $(function() {
   var $maleLink = $("#male-link");
   var $femaleLink = $("#female-link");
 
+  var $meanLine = $("#mean-line");
+  var $trendLine = $("#trend-line");
+
   var chartData = {}
 
   $today.on("click", todayChart);
@@ -40,6 +43,9 @@ $(function() {
   $allLink.on("click", normalChart);
   $maleLink.on("click", displayMale);
   $femaleLink.on("click", displayFemale);
+
+  $meanLine.on("click", meanChart);
+  $trendLine.on("click", trendChart);
 
   function todayChart(event) {
     event.preventDefault();
@@ -119,5 +125,15 @@ $(function() {
 
     populateChart(chartData);
   };
+
+  function meanChart() {
+
+  };
+
+  function trendChart() {
+
+  };
+
+  $fourteenDays.trigger("click");
 
 });
