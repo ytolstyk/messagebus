@@ -123,13 +123,16 @@ $(function() {
   function meanChart(event) {
     event.preventDefault();
     clearChart();
-    var len = chartData.datasets[0].length;
+
+    chartData.datasets.push(chartData.mean_data);
+    populateChart(chartData);
   };
 
   function trendChart(event) {
     event.preventDefault();
     clearChart();
-    var len = chartData.datasets[0].length;
+    
+    populateChart(chartData);
   };
 
   function clearChart() {

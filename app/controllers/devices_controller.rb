@@ -132,6 +132,8 @@ class DevicesController < ApplicationController
   end
 
   def return_json(labels, data, segments)
+    avg = (data[:numbers].inject(&:+).to_f / data[:numbers].length).round(1)
+
     data = { labels: labels,
              datasets: [
               {
@@ -157,7 +159,14 @@ class DevicesController < ApplicationController
               pointStrokeColor: "#fff",
               data: data[:male]
               },
-            device_data: data[:device_data]
+            device_data: data[:device_data],
+            mean_data: {
+              fillColor: "rgba(220,220,220,0.5)",
+              strokeColor: "rgba(220,220,220,1)",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              data: [avg] * data[:numbers].length
+              }
       }
   end
 end
